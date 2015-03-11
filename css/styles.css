@@ -1,0 +1,42 @@
+ul.status li {
+	border-radius: 10px;
+	text-align: center;
+	max-width: 75px;
+}
+
+ul {
+	list-style: none;
+}
+
+.red {
+	background-color: #ff0000;
+}
+
+.green {
+	background-color: green;
+}
+
+ul.train {
+	padding:20px 0; 
+	border-bottom: 1px solid #ccc;
+}
+
+ul.train:last-of-type {
+	border-bottom: none;
+}
+
+#map-canvas {
+	min-width: 350px;
+	min-height: 350px;
+}
+
+*[id^='map-canvas']{
+	min-width: 100%;
+	min-height: 350px;
+}
+
+li.status {
+	text-transform: uppercase;
+	color: #666;
+	padding: 5px 10px;
+}
