@@ -1,7 +1,5 @@
 #SEPTA's Warminster Regional Rail Arrival Info
 
-[http://labs.neesta.com/septa/](http://labs.neesta.com/septa/)
-
 Detail view of all regional rail trains heading outbound to the Warminster station. This was something I built quickly for my wife one day, because her SEPTA iOS app kept crashing.
 
 ===
