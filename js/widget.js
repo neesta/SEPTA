@@ -2,20 +2,23 @@
 
 $(document).ready(function(){
 
-		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?';
-		var refreshRate = 550000 // millisecs
-		var dataOptions = { };
+		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
+			refreshRate = 550000 // millisecs
+			dataOptions = { },
+			refresh = false,
+			selectedDestination = "Warminster",
+			jsonData = [];
 
 		function displayData(data) {
 
 			//var data = data;
 			//alert(data[2].dest);
 
-			var d = data;
+			jsonData = data;
 			var output = "";
 			var totalTrains = 0;
 
-			$.each(d, function(i,item){
+			$.each(jsonData, function(i,item){
 
 				//console.log(item.dest);
 
@@ -23,7 +26,7 @@ $(document).ready(function(){
 
 				// Build the div
 
-				if(destination === "Warminster") {
+				if(destination === selectedDestination) {
 
 					totalTrains++;
 
@@ -49,11 +52,11 @@ $(document).ready(function(){
 			if(totalTrains >= 1) {
 				$("#ajax").html(output);
 
-				$.each(d, function(i,item){
+				$.each(jsonData, function(i,item){
 
 					var destination = item.dest;
 
-					if(destination === "Warminster") {
+					if(destination === selectedDestination) {
 
 						var myLatlng = new google.maps.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
@@ -84,12 +87,12 @@ $(document).ready(function(){
 		        });
 			} else {
 
-				output = "<p>Well it looks like there aren't any trains currently headed towards Warminster";
+				output = "<br><br><h5>Well it looks like there aren't any trains currently headed towards " + selectedDestination + "</h5>";
 
 				$("#ajax").html(output);
 
 			}	
-		}
+		}; // End displayData function
 
 		$.getJSON(septaURL, dataOptions, displayData);
 
@@ -113,12 +116,27 @@ $(document).ready(function(){
 
 		//alert('clicked');
 
+		// Check if refresh is set to true
+		if(refresh) {	
+			var refreshId = setInterval(function()
+		    {
+		        $.getJSON(septaURL, dataOptions, displayData);
+		        //alert('refresh');
+		    }, refreshRate);
+		}
 
-	var refreshId = setInterval(function()
-    {
-        $.getJSON(septaURL, dataOptions, displayData);
-        //alert('refresh');
-    }, refreshRate);
+		// Check dropdown menu for changes
+		$(".select-destination").change(function(){
+			selectedDestination = $(this).val();
+			$('.desitinationTxt').html(selectedDestination);
+			//console.log(selectedDestination);
+			if(selectedDestination == "Chestnut Hill West") {
+				selectedDestination = "Chestnut H West";
+			} else if(selectedDestination == "Chestnut Hill East") {
+				selectedDestination = "Chestnut H West";
+			}
+			displayData(jsonData);
+		})
 
 
 });  // End doc.ready
