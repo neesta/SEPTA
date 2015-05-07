@@ -3,7 +3,7 @@
 $(document).ready(function(){
 
 		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?';
-
+		var refreshRate = 550000 // millisecs
 		var dataOptions = { };
 
 		function displayData(data) {
@@ -27,20 +27,19 @@ $(document).ready(function(){
 
 					output += "<ul class='train'>";
 
-					console.log("FUCK YES");
-
 					output += "<li><h4>Next Stop = " + item.nextstop + "</h4></li>";
 
 					if(item.late === 0) {
-						output += "<li class='status bg-success'>Is it late? = No!</li>";
+						output += "<li class='status bg-success'>The train is not late.</li>";
+					} else if(item.late === 1) {
+						output += "<li class='status bg-danger'>It's running " + item.late + " minute late.</li>";
 					} else {
-						output += "<li class='status bg-danger'>Is it late? = " + item.late + " Minutes</li>";
+						output += "<li class='status bg-danger'>It's running " + item.late + " minutes late.</li>";
 					}
 
 					output += "<li><div id='map-canvas" + i +"'></div></li>";
 
 					output += "</li></ul>";
-
 				}
 
 			});
@@ -70,6 +69,13 @@ $(document).ready(function(){
 						});
 
 				        marker.setMap(map);
+
+				        // Center train location position on resize
+				        google.maps.event.addDomListener(window, "resize", function() {
+							 var center = map.getCenter();
+							 google.maps.event.trigger(map, "resize");
+							 map.setCenter(center); 
+						});
 
 				    }
 
@@ -131,7 +137,7 @@ $(document).ready(function(){
     {
         $.getJSON(septaURL, dataOptions, displayData);
         //alert('refresh');
-    }, 550000);
+    }, refreshRate);
 
 
 
@@ -166,122 +172,5 @@ $(document).ready(function(){
 
 	};*/
 
-}); 
+});  // End doc.ready
 
-
-/*
-var xhr = new XMLHttpRequest();
-
-xhr.onreadystatechange = function(){
-	if (xhr.readyState === 4) {
-
-		var employees = JSON.parse(xhr.responseText);
-
-		console.log(employees);
-
-		return;
-
-		if(xhr.status === 200) {
-
-			document.getElementById('ajax').innerHTML = employees;
-
-			displayJSON(employees);
-
-		} else if (xhr.status === 404) {
-
-			alert('WTF that file don\'t exist');
-
-		}
-		
-	}
-};
-
-xhr.open('GET', 'data.json');
-xhr.send();
-
-function sendAJAX() {
-	//alert('click');
-	xhr.send();
-	var btn = document.getElementById('load');//.style.display = 'none';
-	TweenMax.to(btn, .5, {autoAlpha:0, onComplete:function(){
-		btn.style.display = 'none';
-	}});
-};
-
-function displayJSON($obj) {
-
-	var html = '<div class="col-lg-3"><ul>';
-	var cssRed = 'red';
-	var cssGreen = 'green';
-
-	for(var i=0; i<$obj.length; i++) {
-
-		html += '<li class="';
-
-		console.log($obj[i]['name']);
-
-		if(!$obj[i]['inoffice']) {
-			html += cssRed;
-		} else {
-			html += cssGreen;
-		}
-
-		html += '">' + $obj[i]['name'] + '</li>';
-	
-	}
-
-	html += '</ul></div>';
-
-
-	document.getElementById('ajax').innerHTML = html;
-
-}
-
-
-
-// Create the XHR object.
-function createCORSRequest(method, url) {
-  var xhr = new XMLHttpRequest();
-  if ("withCredentials" in xhr) {
-    // XHR for Chrome/Firefox/Opera/Safari.
-    xhr.open(method, url, true);
-  } else if (typeof XDomainRequest != "undefined") {
-    // XDomainRequest for IE.
-    xhr = new XDomainRequest();
-    xhr.open(method, url);
-  } else {
-    // CORS not supported.
-    xhr = null;
-  }
-  return xhr;
-}
-
-// Helper method to parse the title tag from the response.
-function getTitle(text) {
-  return text.match('<title>(.*)?</title>')[1];
-}
-
-// Make the actual CORS request.
-function makeCorsRequest() {
-  // All HTML5 Rocks properties support CORS.
-  var url = 'http://www3.septa.org/hackathon/TrainView/';
-
-  var xhr = createCORSRequest('GET', url);
-  if (!xhr) {
-    alert('CORS not supported');
-    return;
-  }
-
-  // Response handlers.
-  xhr.onload = function() {
-    var text = xhr.responseText;
-    var title = getTitle(text);
-    alert('Response from CORS request to ' + url + ': ' + title);
-  };
-
-  xhr.onerror = function() {
-    alert('Woops, there was an error making the request.');
-  };
-
-  xhr.send();
-}*/
