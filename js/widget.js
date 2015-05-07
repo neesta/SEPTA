@@ -3,7 +3,7 @@
 $(document).ready(function(){
 
 		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
-			refreshRate = 550000 // millisecs
+			refreshRate = 300000 // millisecs - 5 seconds
 			dataOptions = { },
 			refresh = false,
 			selectedDestination = "Warminster",
@@ -97,17 +97,17 @@ $(document).ready(function(){
 		$.getJSON(septaURL, dataOptions, displayData);
 
 		var jqxhr = $.getJSON( septaURL, function() {
-		  console.log( "success" );
+		  	console.log( "success" );
 		})
-		  .done(function() {
-		    console.log( "second success" );
-		  })
-		  .fail(function() {
-		    console.log( "error" );
-		  })
-		  .always(function() {
-		    console.log( "complete" );
-		  });
+		.done(function() {
+		    	console.log( "second success" );
+		})
+		.fail(function() {
+		    	console.log( "error" );
+		})
+		.always(function() {
+		    	console.log( "complete" );
+		});
 		 
 		// Set another completion function for the request above
 		jqxhr.complete(function() {
@@ -116,14 +116,21 @@ $(document).ready(function(){
 
 		//alert('clicked');
 
-		// Check if refresh is set to true
-		if(refresh) {	
-			var refreshId = setInterval(function()
-		    {
-		        $.getJSON(septaURL, dataOptions, displayData);
-		        //alert('refresh');
-		    }, refreshRate);
-		}
+		
+		$("#autoRefresh").change(function(){
+			if( $(this).prop( "checked" ) ) {
+				refresh = true;
+				$("label").html("Auto Refresh <span class='subtle'>- every 5 seconds</span>");
+			} else {
+				refresh = false;
+				$("label").html("Auto Refresh");
+			}
+		});
+
+		var refreshId = setInterval(function()
+	    {
+	        if(refresh) $.getJSON(septaURL, dataOptions, displayData);
+	    }, refreshRate);
 
 		// Check dropdown menu for changes
 		$(".select-destination").change(function(){
@@ -136,7 +143,7 @@ $(document).ready(function(){
 				selectedDestination = "Chestnut H West";
 			}
 			displayData(jsonData);
-		})
+		});
 
 
 });  // End doc.ready
