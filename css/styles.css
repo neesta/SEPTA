@@ -62,3 +62,9 @@ a:hover { color: gray; text-decoration: none; }
 .bg-danger {
 	background-color: red;
 }
+
+.subtle {
+	color: #ccc;
+	font-size: .8em;
+	font-weight: 200;
+}
