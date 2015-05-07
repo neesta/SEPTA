@@ -3,3 +3,8 @@ test
 node_modules
 bower_components
 app
+.sass-cache
+.tmp
+.yo-rc.json
+bower.json
+data.json
