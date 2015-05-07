@@ -21,6 +21,8 @@ $(document).ready(function(){
 
 				var destination = item.dest;
 
+				// Build the div
+
 				if(destination === "Warminster") {
 
 					totalTrains++;
@@ -104,8 +106,6 @@ $(document).ready(function(){
 		    console.log( "complete" );
 		  });
 		 
-		// Perform other work here ...
-		 
 		// Set another completion function for the request above
 		jqxhr.complete(function() {
 		  console.log( "second complete" );
@@ -114,63 +114,12 @@ $(document).ready(function(){
 		//alert('clicked');
 
 
-		/*$.ajax({
-		  url: "http://www3.septa.org/hackathon/locations/get_locations.php?lon=-75.161&lat=39.95205&callback=?",
-
-		 dataType: "jsonp",
-		  success: function(data){
-		    $.each(data, function(i,item){
-		        var locname =item.location_name;
-		        if( item.location_type== 'perk_locations')
-		        {
-
-		            if(item.location_data != null)
-		             alert(item.location_data.location_id + ' ' +item.location_data.location_name);
-		        }
-
-		    });
-		  }
-		});*/
-
-
 	var refreshId = setInterval(function()
     {
         $.getJSON(septaURL, dataOptions, displayData);
         //alert('refresh');
     }, refreshRate);
 
-
-
-
-	/*function sendAJAX() {
-		
-		$.getJSON('data.json', function(response) {
-
-			//alert(response);
-
-			var html = '<div class="col-lg-3"><ul>';
-			var cssRed = 'red';
-			var cssGreen = 'green';
-
-			$.each(response, function(index,value){
-				html += '<li class="';
-				if(value.inoffice) {
-					html += cssRed;
-				} else {
-					html += cssGreen;
-				}
-
-				html += '">' + value.name + '</li>';
-			});
-
-			console.log(html);
-
-			$('#ajax').html(html);
-
-			TweenMax.to($('#load'), .5, {opacity:0});
-	});
-
-	};*/
 
 });  // End doc.ready
 
