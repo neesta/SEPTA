@@ -1,6 +1,6 @@
-#SEPTA's Warminster Regional Rail Arrival Info
+#SEPTA's Regional Rail Arrival Info
 
-Detail view of all regional rail trains heading outbound to the Warminster station. This was something I built quickly for my wife one day, because her SEPTA iOS app kept crashing.
+Detail view of all regional rail trains heading outbound to their destination station. Now includes a drop-down menu to select other lines. This was something I built quickly for my wife one day, because her SEPTA iOS app kept crashing.
 
 ===
 
