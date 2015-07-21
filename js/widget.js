@@ -5,8 +5,8 @@ $(document).ready(function(){
 		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
 			refreshRate = 300000 // millisecs - 5 seconds
 			dataOptions = { },
-			refresh = false,
-			selectedDestination = "Warminster",
+			refresh = false,  // Defaults to not automatically refresh
+			selectedDestination = "Warminster",  // Defaults to Warminster station
 			jsonData = [];
 
 		function displayData(data) {
@@ -17,6 +17,7 @@ $(document).ready(function(){
 			jsonData = data;
 			var output = "";
 			var totalTrains = 0;
+			var displayArray = [];
 
 			$.each(jsonData, function(i,item){
 
@@ -45,11 +46,16 @@ $(document).ready(function(){
 					output += "<li><div id='map-canvas" + i +"'></div></li>";
 
 					output += "</li></ul>";
+
+					displayArray.push(output);
 				}
 
 			});
 
 			if(totalTrains >= 1) {
+
+				displayArray.reverse();
+
 				$("#ajax").html(output);
 
 				$.each(jsonData, function(i,item){
@@ -115,7 +121,6 @@ $(document).ready(function(){
 		});
 
 		//alert('clicked');
-
 		
 		$("#autoRefresh").change(function(){
 			if( $(this).prop( "checked" ) ) {
