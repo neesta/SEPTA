@@ -11,7 +11,8 @@ $(document).ready(function(){
 
 		function displayData(data) {
 
-			if(document.location.hash != selectedDestination) {
+			// Get the # value and adjust destination if different from default
+			if(document.location.hash != selectedDestination && document.location.hash != '') {
 				$(".select-destination").val(document.location.hash.split('#')[1]);
 				//console.log(document.location.hash.split('#')[1]);
 				$('.destinationTxt').html(document.location.hash.split('#')[1]);
@@ -154,21 +155,7 @@ $(document).ready(function(){
 			//$('.desitinationTxt').html(selectedDestination);
 			//console.log(selectedDestination);
 			
-			//splitURL = location.href.split('/');
 			document.location.hash = selectedDestination;
-			//history.pushState("#");
-
-			/*$.each(splitURL, function(i){
-				console.log(' -- ' + splitURL[i]);
-			});*/
-
-			//if()
-
-			//console.log(splitURL);//getQueryStringValue( "#" ));
-			//var newURL = splitURL[0] + "//" + splitURL[1];// + "www.example.com/#cbp=ajax/project.aspx?id=" + getQueryStringValue( "#" );
-
-            //redirect to new page
-            //location.href = newUrl;
 
 			displayData(jsonData);
 		});
