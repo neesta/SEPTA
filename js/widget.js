@@ -3,7 +3,7 @@
 $(document).ready(function(){
 
 		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
-			refreshRate = 300000 // millisecs - 5 seconds
+			refreshRate = 300000, // millisecs - 5 seconds
 			dataOptions = { },
 			refresh = false,  // Defaults to not automatically refresh
 			selectedDestination = "Warminster",  // Defaults to Warminster station
@@ -23,7 +23,6 @@ $(document).ready(function(){
 			//alert(data[2].dest);
 
 			jsonData = data;
-			var output = "";
 			var totalTrains = 0;
 			var displayArray = [];
 
@@ -39,27 +38,9 @@ $(document).ready(function(){
 
 					totalTrains++;
 
-					output = "";
+					displayArray.push(trainItem(item, i));
 
-					output += "<ul class='train'>";
-
-					output += "<li><h4>Next Stop = " + item.nextstop + "</h4></li>";
-
-					if(item.late === 0) {
-						output += "<li class='status bg-success'>The train is not late.</li>";
-					} else if(item.late === 1) {
-						output += "<li class='status bg-danger'>It's running " + item.late + " minute late.</li>";
-					} else {
-						output += "<li class='status bg-danger'>It's running " + item.late + " minutes late.</li>";
-					}
-
-					output += "<li><div id='map-canvas" + i +"'></div></li>";
-
-					output += "</li></ul>";
-
-					displayArray.push(output);
-
-					console.log(displayArray)
+					console.log(displayArray);
 				}
 
 			});
@@ -110,7 +91,7 @@ $(document).ready(function(){
 				$("#ajax").html(output);
 
 			}	
-		}; // End displayData function
+		} // End displayData function
 
 		$.getJSON(septaURL, dataOptions, displayData);
 
@@ -159,6 +140,29 @@ $(document).ready(function(){
 
 			displayData(jsonData);
 		});
+
+		function trainItem(train, inc) {
+
+			var output = "";
+
+			output += "<ul class='train'>";
+
+			output += "<li><h4>Next Stop = " + train.nextstop + "</h4></li>";
+
+			if(train.late === 0) {
+				output += "<li class='status bg-success'>The train is not late.</li>";
+			} else if(train.late === 1) {
+				output += "<li class='status bg-danger'>It's running " + train.late + " minute late.</li>";
+			} else {
+				output += "<li class='status bg-danger'>It's running " + train.late + " minutes late.</li>";
+			}
+
+			output += "<li><div id='map-canvas" + inc +"'></div></li>";
+
+			output += "</li></ul>";
+
+			return output;
+		}
 
 		function cleanUpDestination($d) {
 			destination = $d;
