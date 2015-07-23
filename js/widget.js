@@ -11,6 +11,13 @@ $(document).ready(function(){
 
 		function displayData(data) {
 
+			if(document.location.hash != selectedDestination) {
+				$(".select-destination").val(document.location.hash.split('#')[1]);
+				//console.log(document.location.hash.split('#')[1]);
+				$('.destinationTxt').html(document.location.hash.split('#')[1]);
+				selectedDestination = cleanUpDestination(document.location.hash.split('#')[1]);
+			}
+
 			//var data = data;
 			//alert(data[2].dest);
 
@@ -31,6 +38,8 @@ $(document).ready(function(){
 
 					totalTrains++;
 
+					output = "";
+
 					output += "<ul class='train'>";
 
 					output += "<li><h4>Next Stop = " + item.nextstop + "</h4></li>";
@@ -48,15 +57,17 @@ $(document).ready(function(){
 					output += "</li></ul>";
 
 					displayArray.push(output);
+
+					console.log(displayArray)
 				}
 
 			});
 
 			if(totalTrains >= 1) {
 
-				displayArray.reverse();
+				//displayArray.reverse();
 
-				$("#ajax").html(output);
+				$("#ajax").html(displayArray[0]);
 
 				$.each(jsonData, function(i,item){
 
@@ -140,15 +151,38 @@ $(document).ready(function(){
 		// Check dropdown menu for changes
 		$(".select-destination").change(function(){
 			selectedDestination = $(this).val();
-			$('.desitinationTxt').html(selectedDestination);
+			//$('.desitinationTxt').html(selectedDestination);
 			//console.log(selectedDestination);
-			if(selectedDestination == "Chestnut Hill West") {
-				selectedDestination = "Chestnut H West";
-			} else if(selectedDestination == "Chestnut Hill East") {
-				selectedDestination = "Chestnut H West";
-			}
+			
+			//splitURL = location.href.split('/');
+			document.location.hash = selectedDestination;
+			//history.pushState("#");
+
+			/*$.each(splitURL, function(i){
+				console.log(' -- ' + splitURL[i]);
+			});*/
+
+			//if()
+
+			//console.log(splitURL);//getQueryStringValue( "#" ));
+			//var newURL = splitURL[0] + "//" + splitURL[1];// + "www.example.com/#cbp=ajax/project.aspx?id=" + getQueryStringValue( "#" );
+
+            //redirect to new page
+            //location.href = newUrl;
+
 			displayData(jsonData);
 		});
+
+		function cleanUpDestination($d) {
+			destination = $d;
+			if(destination == "Chestnut Hill West") {
+				destination = "Chestnut H West";
+			} else if(destination == "Chestnut Hill East") {
+				destination = "Chestnut H West";
+			}
+
+			return destination; 
+		}
 
 
 });  // End doc.ready
