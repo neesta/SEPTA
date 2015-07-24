@@ -2,178 +2,181 @@
 
 $(document).ready(function(){
 
-		var septaURL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
-			refreshRate = 300000, // millisecs - 5 seconds
-			dataOptions = { },
-			refresh = false,  // Defaults to not automatically refresh
-			selectedDestination = "Warminster",  // Defaults to Warminster station
-			jsonData = [];
+	'use strict';
 
-		function displayData(data) {
+	const SEPTA_URL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
+		  REFRESH_RATE = 300000; // millisecs - 5 seconds
 
-			// Get the # value and adjust destination if different from default
-			if(document.location.hash != selectedDestination && document.location.hash != '') {
-				$(".select-destination").val(document.location.hash.split('#')[1]);
-				//console.log(document.location.hash.split('#')[1]);
-				$('.destinationTxt').html(document.location.hash.split('#')[1]);
-				selectedDestination = cleanUpDestination(document.location.hash.split('#')[1]);
+	var	dataOptions = { },
+		refresh = false,  // Defaults to not automatically refresh
+		selectedDestination = "Warminster",  // Defaults to Warminster station
+		jsonData = [];
+
+	function displayData(data) {
+
+		// Get the # value and set new destination if different from default
+		if(document.location.hash != selectedDestination) {
+			document.location.hash = selectedDestination;
+			$(".select-destination").val(document.location.hash.split('#')[1]);
+			$('.destinationTxt').html(document.location.hash.split('#')[1]);
+			selectedDestination = cleanUpDestination(document.location.hash.split('#')[1]);
+		}
+
+		//var data = data;
+		//alert(data[2].dest);
+
+		jsonData = data;
+		var totalTrains = 0;
+		var displayArray = [];
+
+		$.each(jsonData, function(i,item){
+
+			//console.log(item.dest);
+
+			var destination = item.dest;
+
+			// Build the div
+
+			if(destination === selectedDestination) {
+
+				totalTrains++;
+
+				displayArray.push(trainItem(item, i));
+
+				console.log(displayArray);
 			}
 
-			//var data = data;
-			//alert(data[2].dest);
+		});
 
-			jsonData = data;
-			var totalTrains = 0;
-			var displayArray = [];
+		if(totalTrains >= 1) {
+
+			//displayArray.reverse();
+
+			$("#ajax").html(displayArray[0]);
 
 			$.each(jsonData, function(i,item){
 
-				//console.log(item.dest);
-
 				var destination = item.dest;
-
-				// Build the div
 
 				if(destination === selectedDestination) {
 
-					totalTrains++;
+					var myLatlng = new google.maps.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
-					displayArray.push(trainItem(item, i));
+					var mapOptions = {
+				          center: myLatlng,
+				          zoom: 16
+				        };
 
-					console.log(displayArray);
-				}
+			        var map = new google.maps.Map(document.getElementById('map-canvas'+i), mapOptions);
 
-			});
+			        var marker = new google.maps.Marker({
+					    position: myLatlng,
+					    map: map,
+					    title:"I'm here!"
+					});
 
-			if(totalTrains >= 1) {
+			        marker.setMap(map);
 
-				//displayArray.reverse();
+			        // Center train location position on resize
+			        google.maps.event.addDomListener(window, "resize", function() {
+						 var center = map.getCenter();
+						 google.maps.event.trigger(map, "resize");
+						 map.setCenter(center); 
+					});
 
-				$("#ajax").html(displayArray[0]);
+			    }
 
-				$.each(jsonData, function(i,item){
+	        });
+		} else {
 
-					var destination = item.dest;
+			output = "<br><br><h5>Well it looks like there aren't any trains currently headed towards " + selectedDestination + "</h5>";
 
-					if(destination === selectedDestination) {
+			$("#ajax").html(output);
 
-						var myLatlng = new google.maps.LatLng(parseFloat(item.lat),parseFloat(item.lon));
+		}	
+	} // End displayData function
 
-						var mapOptions = {
-					          center: myLatlng,
-					          zoom: 16
-					        };
+	$.getJSON(SEPTA_URL, dataOptions, displayData);
 
-				        var map = new google.maps.Map(document.getElementById('map-canvas'+i), mapOptions);
+	var jqxhr = $.getJSON( SEPTA_URL, function() {
+	  	console.log( "success" );
+	})
+	.done(function() {
+	    	console.log( "second success" );
+	})
+	.fail(function() {
+	    	console.log( "error" );
+	})
+	.always(function() {
+	    	console.log( "complete" );
+	});
+	 
+	// Set another completion function for the request above
+	jqxhr.complete(function() {
+	  console.log( "second complete" );
+	});
 
-				        var marker = new google.maps.Marker({
-						    position: myLatlng,
-						    map: map,
-						    title:"I'm here!"
-						});
+	//alert('clicked');
+	
+	$("#autoRefresh").change(function(){
+		if( $(this).prop( "checked" ) ) {
+			refresh = true;
+			$("label").html("Auto Refresh <span class='subtle'>- every 5 seconds</span>");
+		} else {
+			refresh = false;
+			$("label").html("Auto Refresh");
+		}
+	});
 
-				        marker.setMap(map);
+	var refreshId = setInterval(function()
+    {
+        if(refresh) $.getJSON(SEPTA_URL, dataOptions, displayData);
+    }, REFRESH_RATE);
 
-				        // Center train location position on resize
-				        google.maps.event.addDomListener(window, "resize", function() {
-							 var center = map.getCenter();
-							 google.maps.event.trigger(map, "resize");
-							 map.setCenter(center); 
-						});
-
-				    }
-
-		        });
-			} else {
-
-				output = "<br><br><h5>Well it looks like there aren't any trains currently headed towards " + selectedDestination + "</h5>";
-
-				$("#ajax").html(output);
-
-			}	
-		} // End displayData function
-
-		$.getJSON(septaURL, dataOptions, displayData);
-
-		var jqxhr = $.getJSON( septaURL, function() {
-		  	console.log( "success" );
-		})
-		.done(function() {
-		    	console.log( "second success" );
-		})
-		.fail(function() {
-		    	console.log( "error" );
-		})
-		.always(function() {
-		    	console.log( "complete" );
-		});
-		 
-		// Set another completion function for the request above
-		jqxhr.complete(function() {
-		  console.log( "second complete" );
-		});
-
-		//alert('clicked');
+	// Check dropdown menu for changes
+	$(".select-destination").change(function(){
+		selectedDestination = $(this).val();
+		//$('.desitinationTxt').html(selectedDestination);
+		//console.log(selectedDestination);
 		
-		$("#autoRefresh").change(function(){
-			if( $(this).prop( "checked" ) ) {
-				refresh = true;
-				$("label").html("Auto Refresh <span class='subtle'>- every 5 seconds</span>");
-			} else {
-				refresh = false;
-				$("label").html("Auto Refresh");
-			}
-		});
+		document.location.hash = selectedDestination;
 
-		var refreshId = setInterval(function()
-	    {
-	        if(refresh) $.getJSON(septaURL, dataOptions, displayData);
-	    }, refreshRate);
+		displayData(jsonData);
+	});
 
-		// Check dropdown menu for changes
-		$(".select-destination").change(function(){
-			selectedDestination = $(this).val();
-			//$('.desitinationTxt').html(selectedDestination);
-			//console.log(selectedDestination);
-			
-			document.location.hash = selectedDestination;
+	function trainItem(train, inc) {
 
-			displayData(jsonData);
-		});
+		var output = "";
 
-		function trainItem(train, inc) {
+		output += "<ul class='train'>";
 
-			var output = "";
+		output += "<li><h4>Next Stop = " + train.nextstop + "</h4></li>";
 
-			output += "<ul class='train'>";
-
-			output += "<li><h4>Next Stop = " + train.nextstop + "</h4></li>";
-
-			if(train.late === 0) {
-				output += "<li class='status bg-success'>The train is not late.</li>";
-			} else if(train.late === 1) {
-				output += "<li class='status bg-danger'>It's running " + train.late + " minute late.</li>";
-			} else {
-				output += "<li class='status bg-danger'>It's running " + train.late + " minutes late.</li>";
-			}
-
-			output += "<li><div id='map-canvas" + inc +"'></div></li>";
-
-			output += "</li></ul>";
-
-			return output;
+		if(train.late === 0) {
+			output += "<li class='status bg-success'>The train is not late.</li>";
+		} else if(train.late === 1) {
+			output += "<li class='status bg-danger'>It's running " + train.late + " minute late.</li>";
+		} else {
+			output += "<li class='status bg-danger'>It's running " + train.late + " minutes late.</li>";
 		}
 
-		function cleanUpDestination($d) {
-			destination = $d;
-			if(destination == "Chestnut Hill West") {
-				destination = "Chestnut H West";
-			} else if(destination == "Chestnut Hill East") {
-				destination = "Chestnut H West";
-			}
+		output += "<li><div id='map-canvas" + inc +"'></div></li>";
 
-			return destination; 
+		output += "</li></ul>";
+
+		return output;
+	}
+
+	function cleanUpDestination($d) {
+		var cleanDestination = $d;
+		if(cleanDestination == "Chestnut Hill West") {
+			cleanDestination = "Chestnut H West";
+		} else if(cleanDestination == "Chestnut Hill East") {
+			cleanDestination = "Chestnut H West";
 		}
+
+		return cleanDestination; 
+	}
 
 
 });  // End doc.ready
