@@ -1,7 +1,5 @@
-
-
-$(document).ready(function(){
-
+(function(){
+	
 	'use strict';
 
 	const SEPTA_URL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
@@ -41,7 +39,9 @@ $(document).ready(function(){
 
 				totalTrains++;
 
-				displayArray.push(trainItem(item, i));
+				var wrapper = "<div class='col-xs-12 col-md-6'>" + trainItem(item, i) + "</div>";
+
+				displayArray.push(wrapper);
 
 				console.log(displayArray);
 			}
@@ -52,7 +52,7 @@ $(document).ready(function(){
 
 			//displayArray.reverse();
 
-			$("#ajax").html(displayArray[0]);
+			$("#ajax").html(displayArray);
 
 			$.each(jsonData, function(i,item){
 
@@ -177,7 +177,5 @@ $(document).ready(function(){
 
 		return cleanDestination; 
 	}
-
-
-});  // End doc.ready
+}());
 
