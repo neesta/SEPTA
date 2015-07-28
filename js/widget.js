@@ -12,12 +12,15 @@
 
 	function displayData(data) {
 
-		// Get the # value and set new destination if different from default
-		if(document.location.hash != selectedDestination) {
-			document.location.hash = selectedDestination;
-			$(".select-destination").val(document.location.hash.split('#')[1]);
-			$('.destinationTxt').html(document.location.hash.split('#')[1]);
-			selectedDestination = cleanUpDestination(document.location.hash.split('#')[1]);
+		var hashVar = document.location.hash;
+		var harshVarSplit = hashVar.split('#')[1];
+
+		// Get the # value and adjust destination if different from default
+		if(hashVar != selectedDestination && hashVar != '') {
+			$(".select-destination").val(harshVarSplit);
+			//console.log(document.location.hash.split('#')[1]);
+			$('.destinationTxt').html(harshVarSplit);
+			selectedDestination = cleanUpDestination(harshVarSplit);
 		}
 
 		//var data = data;
