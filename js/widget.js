@@ -23,6 +23,8 @@
 			selectedDestination = cleanUpDestination(harshVarSplit);
 		}
 
+		document.title = 'SEPTA ' + selectedDestination + ' Station Rundown';
+
 		//var data = data;
 		//alert(data[2].dest);
 

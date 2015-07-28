@@ -15,7 +15,7 @@ gulp.task('scripts', function(){
 
 // Concat Task
 gulp.task('concat', function(){
-	gulp.src(['js/bootstrap.min.js', 'js/googlemap.js', 'js/jquery.lazy-load-google-maps.min.js', 'js/min/widget.js'	])
+	gulp.src(['js/bootstrap.min.js', 'js/jquery.lazy-load-google-maps.min.js', 'js/min/widget.js'	])
 		.pipe(concat('app.min.js'))
 		.pipe(gulp.dest('js'));
 	gulp.src(['css/min/bootstrap.min.css', 'css/min/styles.css'])
