@@ -5,51 +5,60 @@
 		<title>SEPTA Warminster Station Rundown</title>
 
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="description" content="Waiting for a SEPTA Regional Rail train? Find out where your it is.">
 
-	    <link rel="stylesheet" href="css/styles.min.css">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+	    <link rel="stylesheet" href="css/styles.css">
 
 	</head>
 	<body>
 		
 		<div class="container">
-			<div class="large-12 columns">
-				<h1 class="page-header"><img src="images/SEPTA_Logo.jpg" alt="SEPTA logo"> Station Rundown</h1>
-
-				<div class="forkit btn btn-default"><a href="https://github.com/neesta/Curse-Generator" target="_blank"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> Fork it</a></div>
-
-				<p>Are you waiting for the train at <span class="destinationTxt">Warminster</span> station? Find out where the f&amp;©# it is.</p>
-
-				<hr>
-				
-				<div class='row' id="train_select">
-					<div class="dropdown col-md-4">Select another line:
-					  	<select class="btn btn-default dropdown-toggle select-destination" role="menu">
-						    <option role="destination">Airport</option>
-						    <option role="destination">Chestnut Hill West</option>
-						    <option role="destination">Chestnut Hill East</option>
-						    <option role="destination">Doylestown</option>
-							<option role="destination">Elwyn</option>
-							<option role="destination">Malvern</option>
-							<option role="destination">Marcus Hook</option>
-							<option role="destination">Norristown</option>
-						    <option role="destination">Trenton</option>
-						    <option role="destination">Thorndale</option>
-						    <option role="destination" selected="selected">Warminster</option>
-						    <option role="destination">West Trenton</option>
-							<option role="destination">Wilmington</option>
-					  	</select>
+			<div class="row">
+				<div class="row">
+					<h1 class="page-header"><img src="images/min/SEPTA.svg" alt="SEPTA logo" width="50px" > SEPTA Station Rundown</h1>
+				</div>
+				<div class="row">
+					<div class="col-xs-10">
+						<p>Are you waiting for the train at <span class="destinationTxt">Warminster</span> station? Find out where the f&amp;©# it is.</p>
 					</div>
-
-					<div class="col-md-4">
-   				        <input id="autoRefresh" name="refresh" type="checkbox">
-				        <label for="refresh">Auto Refresh</label>
-				    </div>
-		    	</div>
-		
-				<div class="row" id="ajax">
-					<div ></div>
+					<div class="col-xs-2">
+						<div class="forkit btn btn-default"><a href="https://github.com/neesta/SEPTA" target="_blank">
+							<span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span> Fork it</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<hr>
+			</div>
+			<div class='row' id="train_select">
+				<div class="dropdown col-md-4">Select another line:
+				  	<select class="btn btn-default dropdown-toggle select-destination" role="menu">
+					    <option role="destination">Airport</option>
+					    <option role="destination">Chestnut Hill West</option>
+					    <option role="destination">Chestnut Hill East</option>
+					    <option role="destination">Doylestown</option>
+						<option role="destination">Elwyn</option>
+						<option role="destination">Malvern</option>
+						<option role="destination">Marcus Hook</option>
+						<option role="destination">Norristown</option>
+					    <option role="destination">Trenton</option>
+					    <option role="destination">Thorndale</option>
+					    <option role="destination" selected="selected">Warminster</option>
+					    <option role="destination">West Trenton</option>
+						<option role="destination">Wilmington</option>
+				  	</select>
 				</div>
 
+				<div class="col-md-4">
+				        <input id="autoRefresh" name="refresh" type="checkbox">
+			        <label for="refresh">Auto Refresh</label>
+			    </div>
+	    	</div>
+		
+			<div class="row" id="ajax">
+				<div></div>
 			</div>
 
 		</div>
