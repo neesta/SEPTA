@@ -10,10 +10,29 @@
 		selectedDestination = "Warminster",  // Defaults to Warminster station
 		jsonData = [];
 
+	////////////////////////////////
+	// JSON
+	////////////////////////////////
+
+	$.getJSON(SEPTA_URL, dataOptions, displayData);
+
+	////////////////////////////////
+	// END JSON
+	////////////////////////////////
+	
+	////////////////////////////////
+	// FUNCTIONS
+	////////////////////////////////
+
 	function displayData(data) {
 
-		var hashVar = document.location.hash;
-		var harshVarSplit = hashVar.split('#')[1];
+		var hashVar = document.location.hash,
+		 	harshVarSplit = hashVar.split('#')[1],
+		 	totalTrains = 0,
+		 	output = '',
+			displayArray = [];
+
+	 	jsonData = data;
 
 		// Get the # value and adjust destination if different from default
 		if(hashVar != selectedDestination && hashVar != '') {
@@ -23,14 +42,8 @@
 			selectedDestination = cleanUpDestination(harshVarSplit);
 		}
 
+		// Set the page title
 		document.title = 'SEPTA ' + selectedDestination + ' Station Rundown';
-
-		//var data = data;
-		//alert(data[2].dest);
-
-		jsonData = data;
-		var totalTrains = 0;
-		var displayArray = [];
 
 		$.each(jsonData, function(i,item){
 
@@ -47,8 +60,6 @@
 				var wrapper = "<div class='col-xs-12 col-md-6'>" + trainItem(item, i) + "</div>";
 
 				displayArray.push(wrapper);
-
-				console.log(displayArray);
 			}
 
 		});
@@ -101,61 +112,14 @@
 		}	
 	} // End displayData function
 
-	$.getJSON(SEPTA_URL, dataOptions, displayData);
-
-	var jqxhr = $.getJSON( SEPTA_URL, function() {
-	  	console.log( "success" );
-	})
-	.done(function() {
-	    	console.log( "second success" );
-	})
-	.fail(function() {
-	    	console.log( "error" );
-	})
-	.always(function() {
-	    	console.log( "complete" );
-	});
-	 
-	// Set another completion function for the request above
-	jqxhr.complete(function() {
-	  console.log( "second complete" );
-	});
-
-	//alert('clicked');
-	
-	$("#autoRefresh").change(function(){
-		if( $(this).prop( "checked" ) ) {
-			refresh = true;
-			$("label").html("Auto Refresh <span class='subtle'>- every 5 seconds</span>");
-		} else {
-			refresh = false;
-			$("label").html("Auto Refresh");
-		}
-	});
-
-	var refreshId = setInterval(function()
-    {
-        if(refresh) $.getJSON(SEPTA_URL, dataOptions, displayData);
-    }, REFRESH_RATE);
-
-	// Check dropdown menu for changes
-	$(".select-destination").change(function(){
-		selectedDestination = $(this).val();
-		//$('.desitinationTxt').html(selectedDestination);
-		//console.log(selectedDestination);
-		
-		document.location.hash = selectedDestination;
-
-		displayData(jsonData);
-	});
-
+	// Builds the train ul 
 	function trainItem(train, inc) {
 
 		var output = "";
 
 		output += "<ul class='train'>";
 
-		output += "<li><h4>Next Stop = " + train.nextstop + "</h4></li>";
+		output += "<li><h4>Next Stop <stromg>" + train.nextstop + "</h4></li>";
 
 		if(train.late === 0) {
 			output += "<li class='status bg-success'>The train is not late.</li>";
@@ -172,6 +136,7 @@
 		return output;
 	}
 
+	// Renames the Chestnut Hill destination text 
 	function cleanUpDestination($d) {
 		var cleanDestination = $d;
 		if(cleanDestination == "Chestnut Hill West") {
@@ -182,5 +147,46 @@
 
 		return cleanDestination; 
 	}
+
+	////////////////////////////////
+	// END FUNCTIONS
+	////////////////////////////////
+
+	////////////////////////////////
+	// EVENTS
+	////////////////////////////////
+
+	$("#autoRefresh").change(function(){
+		if( $(this).prop( "checked" ) ) {
+			refresh = true;
+			$("label").html("Auto Refresh <span class='subtle'>- every 5 seconds</span>");
+		} else {
+			refresh = false;
+			$("label").html("Auto Refresh");
+		}
+	});
+
+	// Refresh the json train data
+	var refreshId = setInterval(function()
+    {
+        if(refresh) $.getJSON(SEPTA_URL, dataOptions, displayData);
+    }, REFRESH_RATE);
+
+	// Check dropdown menu for changes
+	$(".select-destination").change(function(){
+		selectedDestination = $(this).val();
+		//$('.desitinationTxt').html(selectedDestination);
+		//console.log(selectedDestination);
+		
+		document.location.hash = selectedDestination;
+		console.log('display data = ' + jsonData)
+
+		displayData(jsonData);
+	});
+
+	////////////////////////////////
+	// END EVENTS
+	////////////////////////////////
+
 }());
 
