@@ -1,5 +1,5 @@
-(function(){
-	
+define(['jquery', 'gmaps'], function($, m) {
+
 	'use strict';
 
 	const SEPTA_URL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
@@ -8,7 +8,8 @@
 	var	dataOptions = { },
 		refresh = false,  // Defaults to not automatically refresh
 		selectedDestination = "Warminster",  // Defaults to Warminster station
-		jsonData = [];
+		jsonData = [],
+		googleMap = m;
 
 	////////////////////////////////
 	// JSON
@@ -76,14 +77,14 @@
 
 				if(destination === selectedDestination) {
 
-					var myLatlng = new google.maps.LatLng(parseFloat(item.lat),parseFloat(item.lon));
+					var myLatlng = new m.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
 					var mapOptions = {
 				          center: myLatlng,
 				          zoom: 16
 				        };
 
-			        var map = new google.maps.Map(document.getElementById('map-canvas'+i), mapOptions);
+			        var map = new googleMap.Map(document.getElementById('map-canvas'+i), mapOptions);
 
 			        var marker = new google.maps.Marker({
 					    position: myLatlng,
@@ -94,9 +95,9 @@
 			        marker.setMap(map);
 
 			        // Center train location position on resize
-			        google.maps.event.addDomListener(window, "resize", function() {
+			        googleMap.event.addDomListener(window, "resize", function() {
 						 var center = map.getCenter();
-						 google.maps.event.trigger(map, "resize");
+						 googleMap.event.trigger(map, "resize");
 						 map.setCenter(center); 
 					});
 
@@ -188,5 +189,5 @@
 	// END EVENTS
 	////////////////////////////////
 
-}());
+});
 

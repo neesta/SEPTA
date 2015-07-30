@@ -9,7 +9,7 @@
 
 		<link rel="stylesheet" href="css/bootstrap.min.css">
 	    <link rel="stylesheet" href="css/styles.css">
-
+		
 	</head>
 	<body>
 		
@@ -63,9 +63,13 @@
 
 		</div>
 
-	    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-	    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
-  	    <script type="text/javascript" src="js/widget.js"></script>
+        <script data-main="js/main" src="js/require.js"></script>
+
+        <script>
+	        require(['main'], function(){
+	        	require(['widget']);
+	        });
+        </script>
 
 	</body>
 
