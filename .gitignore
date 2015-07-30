@@ -5,4 +5,8 @@ bower_components
 bower.json
 data.json
 .bashrc
+<<<<<<< HEAD
 sftp-config.jsonsftp-json.config
+=======
+sftp-config.json
+>>>>>>> 9f2c5645d8a8121c80cbcf3a7b31406a8e8f7ea6
