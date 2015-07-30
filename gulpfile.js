@@ -13,7 +13,8 @@ gulp.task('scripts', function(){
 		.pipe(gulp.dest('js/min'));
 	gulp.src('css/*.css')
 		.pipe(ugilfycss())
-		.pipe(gulp.dest('css/'));
+		.pipe(gulp.dest('css/'))
+		.pipe(browserSync.reload({stream: true}));
 });
 
 // Concat Task
@@ -21,9 +22,9 @@ gulp.task('concat', function(){
 	gulp.src(['js/bootstrap.min.js', 'js/jquery.lazy-load-google-maps.min.js', 'js/min/widget.js'])
 		.pipe(concat('app.min.js'))
 		.pipe(gulp.dest('js'));
-	/*gulp.src(['css/bootstrap.min.css', 'css/styles.css'])
+	gulp.src(['css/bootstrap.min.css', 'css/styles.css'])
 		.pipe(concat('styles.min.css'))
-		.pipe(gulp.dest('css/'))*/
+		.pipe(gulp.dest('css/'));
 });
 
 // Sass Task
@@ -47,5 +48,19 @@ gulp.task('image', function(){
 		.pipe(gulp.dest('images/min/'))
 });
 
-gulp.task('default', ['sassify', 'scripts', 'concat']);
+// Browser Sync Task
+gulp.task('browserSync', function(){
+	browserSync({
+		server: {
+			baseDir: ""
+		}
+	})
+
+});
+
+gulp.task('copyIndex', function(){
+	gulp.
+})
+
+gulp.task('default', ['sassify', 'concat', 'scripts']);
 gulp.task('dev', ['sassify', 'watch']);
