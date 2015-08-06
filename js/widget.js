@@ -9,7 +9,9 @@ define(['jquery', 'gmaps'], function($, m) {
 		refresh = false,  // Defaults to not automatically refresh
 		selectedDestination = "Warminster",  // Defaults to Warminster station
 		jsonData = [],
-		googleMap = m;
+		googleMap = m,
+		septaStationUrl = "http://www.septa.org/stations/rail/",
+		nextStop;
 
 	getData(); // Load the JSON data
 	
@@ -38,7 +40,7 @@ define(['jquery', 'gmaps'], function($, m) {
 			$(".select-destination").val(harshVarSplit);
 			//console.log(document.location.hash.split('#')[1]);
 			$('.destinationTxt').html(harshVarSplit);
-			selectedDestination = cleanUpDestination(harshVarSplit);
+			selectedDestination = reformatDestination(harshVarSplit, 'ugly');
 		}
 
 		// Set the page title
@@ -118,7 +120,7 @@ define(['jquery', 'gmaps'], function($, m) {
 
 		output += "<ul class='train'>";
 
-		output += "<li class='stop-info'><h4>Next Stop <stromg>" + train.nextstop + "</h4></li>";
+		output += "<li class='stop-info'><a target='_blank' href='"+ getStationStopLink(train.nextstop) + "'><h4>Next Stop <stromg>" + train.nextstop + "</h4></a></li>";
 
 		if(train.late === 0) {
 			output += "<li class='status bg-success'>The train is not late.</li>";
@@ -145,6 +147,44 @@ define(['jquery', 'gmaps'], function($, m) {
 		}
 
 		return cleanDestination; 
+	}
+
+	// Formats the station copy to ugly match with JSON or pretty display for correct station URL
+	function reformatDestination($destination, $style) {
+		var destination = $destination;
+		var style = $style;
+
+		if(style === "ugly") {	
+			switch(destination) {
+				case "Chestnut Hill West":
+					destination = "Chestnut H West";
+					break;
+				case "Chestnut Hill East":
+					destination = "Chestnut H East";
+					break;
+			}
+		} else if(style === "pretty") {
+			switch(destination) {
+				case "Chestnut H West":
+					destination = "Chestnut Hill West";
+					break;
+				case "Chestnut H East":
+					destination = "Chestnut Hill East";
+					break;
+				case "Wayne Jct":
+					destination = "Wayne Junction";
+					break;
+			}
+		}
+
+		return destination; 
+	}
+
+	// Get next station stop information link
+	function getStationStopLink($stop) {
+		var nextStop = $stop;
+		var url = reformatDestination(nextStop, 'pretty').replace(/ /g,'').toLowerCase();
+		return septaStationUrl + url + '.html';
 	}
 
 	////////////////////////////////
