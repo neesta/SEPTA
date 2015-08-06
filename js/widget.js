@@ -34,6 +34,7 @@ define(['jquery', 'gmaps'], function($, m) {
 			displayArray = [];
 
 	 	jsonData = data;
+	 	console.log(jsonData);
 
 		// Get the # value and adjust destination if different from default
 		if(hashVar != selectedDestination && hashVar != '') {
@@ -77,7 +78,7 @@ define(['jquery', 'gmaps'], function($, m) {
 
 				if(destination === selectedDestination) {
 
-					var myLatlng = new m.LatLng(parseFloat(item.lat),parseFloat(item.lon));
+					var myLatlng = new googleMap.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
 					var mapOptions = {
 				          center: myLatlng,
@@ -91,6 +92,7 @@ define(['jquery', 'gmaps'], function($, m) {
 					    map: map,
 					    title:"I'm here!"
 					});
+
 
 			        marker.setMap(map);
 
@@ -116,18 +118,20 @@ define(['jquery', 'gmaps'], function($, m) {
 	// Builds the train ul 
 	function trainItem(train, inc) {
 
-		var output = "";
+		var output = "",
+			nextStop = train.nextstop,
+			late = train.late;
 
 		output += "<ul class='train'>";
 
-		output += "<li class='stop-info'><a target='_blank' href='"+ getStationStopLink(train.nextstop) + "'><h4>Next Stop <stromg>" + train.nextstop + "</h4></a></li>";
+		output += "<li class='stop-info'><a target='_blank' href='"+ getStationStopLink(nextStop) + "'><h4>Next Stop <stromg>" + reformatDestination(nextStop, 'pretty') + "</h4></a></li>";
 
-		if(train.late === 0) {
+		if(late === 0) {
 			output += "<li class='status bg-success'>The train is not late.</li>";
-		} else if(train.late === 1) {
-			output += "<li class='status bg-danger'>It's running " + train.late + " minute late.</li>";
+		} else if(late === 1) {
+			output += "<li class='status bg-danger'>It's running " + late + " minute late.</li>";
 		} else {
-			output += "<li class='status bg-danger'>It's running " + train.late + " minutes late.</li>";
+			output += "<li class='status bg-danger'>It's running " + late + " minutes late.</li>";
 		}
 
 		output += "<li><div id='map-canvas" + inc +"'></div></li>";
@@ -151,33 +155,47 @@ define(['jquery', 'gmaps'], function($, m) {
 
 	// Formats the station copy to ugly match with JSON or pretty display for correct station URL
 	function reformatDestination($destination, $style) {
-		var destination = $destination;
-		var style = $style;
+		var destination = $destination.split(' '),
+			style = $style,
+			len = destination.length,
+			rejoinDest;
 
 		if(style === "ugly") {	
-			switch(destination) {
-				case "Chestnut Hill West":
-					destination = "Chestnut H West";
-					break;
-				case "Chestnut Hill East":
-					destination = "Chestnut H East";
-					break;
+			for(var i=0; i<len; i++) {
+				if(destination[i] === "Hill") {
+					destination[i] = "H";
+				}
 			}
-		} else if(style === "pretty") {
-			switch(destination) {
-				case "Chestnut H West":
-					destination = "Chestnut Hill West";
-					break;
-				case "Chestnut H East":
-					destination = "Chestnut Hill East";
-					break;
-				case "Wayne Jct":
-					destination = "Wayne Junction";
-					break;
+		} 
+		if(style === "pretty") {
+			for(var i=0; i<len; i++) {
+				switch(destination[i]) {
+					case "H":
+						destination[i] = "Hill";
+						break;
+					case "Jct":
+						destination[i] = "Junction";
+						break;
+					case "U":
+						destination[i] = "University";
+						break;
+					case "St":
+						destination[i] = "Street";
+						break;
+					case "Terminal":
+						destination[i] = "";
+						break;
+					case "A":
+						destination[i] = "";
+						break;
+				}
 			}
 		}
 
-		return destination; 
+		//console.log(destination.join(' '))
+		rejoinDest = destination.join(' ');
+		console.log(rejoinDest);
+		return destination.join(' '); 
 	}
 
 	// Get next station stop information link
@@ -216,7 +234,7 @@ define(['jquery', 'gmaps'], function($, m) {
 		//console.log(selectedDestination);
 		
 		document.location.hash = selectedDestination;
-		console.log('display data = ' + jsonData)
+		//console.log('display data = ' + jsonData)
 
 		displayData(jsonData);
 	});

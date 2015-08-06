@@ -1,1 +1,1 @@
-requirejs.config({baseUrl:"js",paths:{async:"async",jquery:["http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min","jquery.min"],widget:"widget"}}),define("gmaps",["async!http://maps.google.com/maps/api/js?v=3&sensor=false"],function(){return window.google.maps});
+requirejs.config({baseUrl:"js",waitSeconds:10,paths:{async:"async",jquery:["http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min","jquery.min"],widget:"widget"}}),define("gmaps",["async!http://maps.google.com/maps/api/js?v=3&sensor=false"],function(){return window.google.maps});
