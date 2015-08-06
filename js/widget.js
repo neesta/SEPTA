@@ -1,4 +1,4 @@
-define(['jquery', 'gmaps'], function($, m) {
+define(['jquery', 'gmaps', 'marker'], function($, m) {
 
 	'use strict';
 
@@ -34,7 +34,6 @@ define(['jquery', 'gmaps'], function($, m) {
 			displayArray = [];
 
 	 	jsonData = data;
-	 	console.log(jsonData);
 
 		// Get the # value and adjust destination if different from default
 		if(hashVar != selectedDestination && hashVar != '') {
@@ -78,23 +77,35 @@ define(['jquery', 'gmaps'], function($, m) {
 
 				if(destination === selectedDestination) {
 
-					var myLatlng = new googleMap.LatLng(parseFloat(item.lat),parseFloat(item.lon));
+					var trainLatlng = new googleMap.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
 					var mapOptions = {
-				          center: myLatlng,
+				          center: trainLatlng,
 				          zoom: 16
 				        };
 
 			        var map = new googleMap.Map(document.getElementById('map-canvas'+i), mapOptions);
 
-			        var marker = new google.maps.Marker({
-					    position: myLatlng,
+			        /*var marker = new google.maps.Marker({
+					    position: trainLatlng,
 					    map: map,
 					    title:"I'm here!"
 					});
 
+			        marker.setMap(map);*/
 
-			        marker.setMap(map);
+			        // Add custom marker with train number
+			        var marker1 = new MarkerWithLabel({
+				       position: trainLatlng,
+				       draggable: true,
+				       raiseOnDrag: true,
+				       map: map,
+				       labelContent: "#" + item.trainno,
+				       labelAnchor: new google.maps.Point(22, -5),
+				       labelClass: "trainLabel", // the CSS class for the label
+				       labelStyle: {opacity: 0.75},
+				     });
+
 
 			        // Center train location position on resize
 			        googleMap.event.addDomListener(window, "resize", function() {
@@ -194,7 +205,6 @@ define(['jquery', 'gmaps'], function($, m) {
 
 		//console.log(destination.join(' '))
 		rejoinDest = destination.join(' ');
-		console.log(rejoinDest);
 		return destination.join(' '); 
 	}
 
