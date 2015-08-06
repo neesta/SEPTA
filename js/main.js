@@ -2,6 +2,7 @@
 
 requirejs.config({
 	baseUrl: "js",
+	waitSeconds: 10,
 	paths: {
 		async: 'async',
 		jquery: [

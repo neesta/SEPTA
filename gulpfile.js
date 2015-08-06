@@ -59,7 +59,7 @@ gulp.task('browserSync', function(){
 });
 
 gulp.task('copyIndex', function(){
-	gulp.
+	//gulp.
 })
 
 gulp.task('default', ['sassify', 'concat', 'scripts']);

@@ -24,6 +24,7 @@ ul.train {
 	padding: 0px;
 	margin: 0px; 
 	border-bottom: 1px solid #ccc;
+	box-shadow: 5px 5px 5px #eee;
 }
 
 ul.train:last-of-type {
@@ -44,6 +45,19 @@ li.status {
 	text-transform: uppercase;
 	color: white;
 	padding: 5px 10px;
+}
+
+li.stop-info {
+    background: #eee;
+    height: 100%;
+    padding: 2px 0 0 9px;
+    padding-top: 2px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    padding-left: 9px;
+    border: 1px solid #ccc;
+    margin-top: 10px;
+    color: darkblue;
 }
 
 .forkit {

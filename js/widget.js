@@ -3,7 +3,7 @@ define(['jquery', 'gmaps'], function($, m) {
 	'use strict';
 
 	const SEPTA_URL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
-		  REFRESH_RATE = 300000; // millisecs - 5 seconds
+		  REFRESH_RATE = 30000; // millisecs - 5 seconds
 
 	var	dataOptions = { },
 		refresh = false,  // Defaults to not automatically refresh
@@ -11,19 +11,17 @@ define(['jquery', 'gmaps'], function($, m) {
 		jsonData = [],
 		googleMap = m;
 
-	////////////////////////////////
-	// JSON
-	////////////////////////////////
-
-	$.getJSON(SEPTA_URL, dataOptions, displayData);
-
-	////////////////////////////////
-	// END JSON
-	////////////////////////////////
+	getData(); // Load the JSON data
 	
 	////////////////////////////////
 	// FUNCTIONS
 	////////////////////////////////
+
+	function getData() {
+		// Set data values
+		$("label").html("Auto Refresh <span class='subtle'>- every " + REFRESH_RATE/1000 + " seconds</span>");
+		return $.getJSON(SEPTA_URL, dataOptions, displayData);
+	}
 
 	function displayData(data) {
 
@@ -120,7 +118,7 @@ define(['jquery', 'gmaps'], function($, m) {
 
 		output += "<ul class='train'>";
 
-		output += "<li><h4>Next Stop <stromg>" + train.nextstop + "</h4></li>";
+		output += "<li class='stop-info'><h4>Next Stop <stromg>" + train.nextstop + "</h4></li>";
 
 		if(train.late === 0) {
 			output += "<li class='status bg-success'>The train is not late.</li>";
@@ -160,17 +158,15 @@ define(['jquery', 'gmaps'], function($, m) {
 	$("#autoRefresh").change(function(){
 		if( $(this).prop( "checked" ) ) {
 			refresh = true;
-			$("label").html("Auto Refresh <span class='subtle'>- every 5 seconds</span>");
 		} else {
 			refresh = false;
-			$("label").html("Auto Refresh");
 		}
 	});
 
 	// Refresh the json train data
 	var refreshId = setInterval(function()
     {
-        if(refresh) $.getJSON(SEPTA_URL, dataOptions, displayData);
+        if(refresh) getData(); // Refresh the JSON data
     }, REFRESH_RATE);
 
 	// Check dropdown menu for changes
