@@ -35,5 +35,4 @@ define('gmaps' , ['async!http://maps.google.com/maps/api/js?v=3&sensor=false'],
 requirejs(['jquery', 'gmaps', 'marker'], function($){
 	console.log('bases loaded');
 	require(['widget']);
-
 });

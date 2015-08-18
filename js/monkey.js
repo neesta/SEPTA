@@ -1,6 +1,8 @@
-define(['jquery', 'gmaps', 'marker'], function($, m) {
+//define(['jquery', 'gmaps', 'marker'], function($, m) {
 
-	//'use strict';
+(function() {
+
+	document.getElementById("results").innerHTML = 'WTF';
 
 	console.log('widget');
 
@@ -11,7 +13,7 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 		refresh = false,  // Defaults to not automatically refresh
 		selectedDestination = "Warminster",  // Defaults to Warminster station
 		jsonData = [],
-		googleMap = m,
+		//googleMap = m,
 		septaStationUrl = "http://www.septa.org/stations/rail/",
 		nextStop;
 
@@ -24,10 +26,16 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 	function getData() {
 		// Set data values
 		$("label").html("Auto Refresh <span class='subtle'>- every " + REFRESH_RATE/1000 + " seconds</span>");
-		return $.getJSON(SEPTA_URL, dataOptions, displayData);
+		//return 
+		console.log('displayData');
+		$("#ajax").append('getData');
+		$.getJSON(SEPTA_URL, dataOptions, displayData);
 	}
 
 	function displayData(data) {
+
+
+		$("#ajax").append('displayData');
 
 		var hashVar = document.location.hash,
 		 	harshVarSplit = hashVar.split('#')[1],
@@ -71,7 +79,7 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 
 			//displayArray.reverse();
 
-			$("#results").html(displayArray);
+			$("#ajax").html(displayArray);
 
 			$.each(jsonData, function(i,item){
 
@@ -79,14 +87,14 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 
 				if(destination === selectedDestination) {
 
-					var trainLatlng = new googleMap.LatLng(parseFloat(item.lat),parseFloat(item.lon));
+					var trainLatlng = new google.maps.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
 					var mapOptions = {
 				          center: trainLatlng,
 				          zoom: 16
 				        };
 
-			        var map = new googleMap.Map(document.getElementById('map-canvas'+i), mapOptions);
+			        var map = new google.maps.Map(document.getElementById('map-canvas'+i), mapOptions);
 
 			        /*var marker = new google.maps.Marker({
 					    position: trainLatlng,
@@ -108,11 +116,10 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 				       labelStyle: {opacity: 0.75},
 				     });
 
-
 			        // Center train location position on resize
-			        googleMap.event.addDomListener(window, "resize", function() {
+			        google.maps.event.addDomListener(window, "resize", function() {
 						 var center = map.getCenter();
-						 googleMap.event.trigger(map, "resize");
+						 google.maps.event.trigger(map, "resize");
 						 map.setCenter(center); 
 					});
 
@@ -123,13 +130,15 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 
 			output = "<br><br><h5>Well it looks like there aren't any trains currently headed towards " + selectedDestination + "</h5>";
 
-			$("#results").html(output);
+			$("#ajax").html(output);
 
 		}	
 	} // End displayData function
 
 	// Builds the train ul 
 	function trainItem(train, inc) {
+
+		$("#ajax").append('trainItem');
 
 		var output = "",
 			nextStop = train.nextstop,
@@ -212,6 +221,8 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 
 	// Get next station stop information link
 	function getStationStopLink($stop) {
+
+		$("#ajax").append('getStationStopLink');
 		var nextStop = $stop;
 		var url = reformatDestination(nextStop, 'pretty').replace(/ /g,'').toLowerCase();
 		return septaStationUrl + url + '.html';
@@ -255,5 +266,6 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 	// END EVENTS
 	////////////////////////////////
 
-});
+//});
 
+})();
