@@ -1,6 +1,8 @@
 define(['jquery', 'gmaps', 'marker'], function($, m) {
 
-	'use strict';
+	//'use strict';
+
+	console.log('widget');
 
 	const SEPTA_URL = 'http://www3.septa.org/hackathon/TrainView/?callback=?',
 		  REFRESH_RATE = 30000; // millisecs - 5 seconds
@@ -22,7 +24,9 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 	function getData() {
 		// Set data values
 		$("label").html("Auto Refresh <span class='subtle'>- every " + REFRESH_RATE/1000 + " seconds</span>");
-		return $.getJSON(SEPTA_URL, dataOptions, displayData);
+		//return 
+		console.log('displayData');
+		$.getJSON(SEPTA_URL, dataOptions, displayData);
 	}
 
 	function displayData(data) {
@@ -77,14 +81,14 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 
 				if(destination === selectedDestination) {
 
-					var trainLatlng = new googleMap.LatLng(parseFloat(item.lat),parseFloat(item.lon));
+					var trainLatlng = new m.LatLng(parseFloat(item.lat),parseFloat(item.lon));
 
 					var mapOptions = {
 				          center: trainLatlng,
 				          zoom: 16
 				        };
 
-			        var map = new googleMap.Map(document.getElementById('map-canvas'+i), mapOptions);
+			        var map = new m.Map(document.getElementById('map-canvas'+i), mapOptions);
 
 			        /*var marker = new google.maps.Marker({
 					    position: trainLatlng,
@@ -106,11 +110,10 @@ define(['jquery', 'gmaps', 'marker'], function($, m) {
 				       labelStyle: {opacity: 0.75},
 				     });
 
-
 			        // Center train location position on resize
-			        googleMap.event.addDomListener(window, "resize", function() {
+			        m.event.addDomListener(window, "resize", function() {
 						 var center = map.getCenter();
-						 googleMap.event.trigger(map, "resize");
+						 m.event.trigger(map, "resize");
 						 map.setCenter(center); 
 					});
 
