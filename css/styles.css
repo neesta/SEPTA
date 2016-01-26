@@ -1,1 +1,130 @@
-ul.status li{border-radius:10px;text-align:center;max-width:75px}ul{list-style:none}.red{background-color:red}.green{background-color:green}ul.train{padding:0px;margin:0px;border-bottom:1px solid #ccc;box-shadow:5px 5px 5px #eee}ul.train:last-of-type{border-bottom:none}#map-canvas{min-width:350px;min-height:350px}*[id^='map-canvas']{min-width:100%;min-height:350px}li.status{text-transform:uppercase;color:white;padding:5px 10px}li.stop-info{background:#eee;height:100%;padding:2px 0 0 9px;padding-top:2px;padding-right:0px;padding-bottom:0px;padding-left:9px;border:1px solid #ccc;margin-top:10px;color:darkblue}.forkit{float:right;font:14px Helvetica;vertical-align:center}a{text-decoration:none;color:black;transition:color 1s}a:hover{color:gray;text-decoration:none}.bg-success{background-color:green}.bg-danger{background-color:red}.subtle{color:#ccc;font-size:.8em;font-weight:200}#train_select{background-color:#eee;margin-bottom:0.5em;padding:0.5em}.SEPTAlogo{height:65px}.row{margin-left:0px !important;margin-right:0px}.trainLabel{color:black;background-color:white;font-size:10px;font-weight:bold;text-align:center;width:40px;border:1px solid darkgrey;white-space:nowrap;border-radius:10px}
+ul.status li {
+border-radius:10px;
+text-align:center;
+max-width:75px;
+}
+
+ul {
+list-style:none;
+}
+
+ul.train {
+padding: 0;
+margin: 0;
+border-bottom:1px solid #cccccc;
+border-left:1px solid #cccccc;
+border-right:1px solid #cccccc;
+box-shadow:3px 3px 6px #ddd;
+}
+
+#map-canvas {
+min-width:350px;
+min-height:350px;
+}
+
+[id^=map-canvas] {
+min-width:100%;
+min-height:350px;
+}
+
+li.status {
+text-transform:uppercase;
+color:#FFFFFF;
+padding-top: 5px;
+padding-bottom: 5px;
+padding-left: 10px;
+padding-right: 10px;
+}
+
+li.stop-info {
+background-color: #eeeeee;
+height:100%;
+padding:2px 0 0 9px;
+padding-top:2px;
+padding-right:0;
+padding-bottom:0;
+padding-left:9px;
+border-top-style: solid;
+border-top-color: #cccccc;
+border-top-width: 1px;
+border-bottom-style: solid;
+border-bottom-color: #cccccc;
+border-bottom-width: 1px;
+border-left-style: solid;
+border-left-color: #cccccc;
+border-left-width: 1px;
+border-right-style: solid;
+border-right-color: #cccccc;
+border-right-width: 1px;
+margin-top:10px;
+color:#0000ff;
+}
+
+.forkit {
+float:right;
+font:14px Helvetica;
+vertical-align:center;
+}
+
+a {
+text-decoration:none;
+color:#000000;
+transition:color 1s;
+}
+
+a:hover {
+color:gray;
+text-decoration:none;
+}
+
+.subtle {
+color:#cccccc;
+font-size:.8em;
+font-weight:200;
+}
+
+#train_select {
+background-color:#eeeeee;
+margin-bottom:.5em;
+padding:.5em;
+}
+
+.SEPTAlogo {
+height:65px;
+}
+
+.row {
+margin-left:0!important;
+margin-right:0;
+}
+
+.trainLabel {
+color:#000000;
+background-color:#FFFFFF;
+font-size:10px;
+font-weight:700;
+text-align:center;
+width:40px;
+border-top-style: solid;
+border-top-color: #808080;
+border-top-width: 1px;
+border-bottom-style: solid;
+border-bottom-color: #808080;
+border-bottom-width: 1px;
+border-left-style: solid;
+border-left-color: #808080;
+border-left-width: 1px;
+border-right-style: solid;
+border-right-color: #808080;
+border-right-width: 1px;
+white-space:nowrap;
+border-radius:10px;
+}
+
+.bg-danger {
+background-color:#FF0000;
+}
+
+.bg-success {
+background-color:#008000;
+}
